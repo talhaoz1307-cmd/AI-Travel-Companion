@@ -1037,13 +1037,13 @@ export default function RegisterPage({ onNavigateToLogin, onNavigateToDashboard 
                     />
                     <span className="text-xs text-slate-600 leading-snug">
                       {content.agreeTermsLabel}{' '}
-                      <a href="#terms" onClick={(e) => e.preventDefault()} className="font-semibold text-emerald-700 hover:text-emerald-800 hover:underline">
+                      <button type="button" onClick={() => alert('Terms of Service dialog')} className="font-semibold text-emerald-700 hover:text-emerald-800 hover:underline">
                         {content.termsOfService}
-                      </a>{' '}
+                      </button>{' '}
                       {content.and}{' '}
-                      <a href="#privacy" onClick={(e) => e.preventDefault()} className="font-semibold text-emerald-700 hover:text-emerald-800 hover:underline">
+                      <button type="button" onClick={() => alert('Privacy Policy dialog')} className="font-semibold text-emerald-700 hover:text-emerald-800 hover:underline">
                         {content.privacyPolicy}
-                      </a>.
+                      </button>.
                     </span>
                   </label>
                   {errors.agreeTerms && (

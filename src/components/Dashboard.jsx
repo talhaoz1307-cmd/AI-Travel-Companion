@@ -95,9 +95,9 @@ const INITIAL_TRIPS = [
   }
 ];
 
-export default function Dashboard({ 
-  onNavigateToLogin, 
-  onNavigateToRegister, 
+export default function Dashboard({
+  onNavigateToLogin,
+  onNavigateToRegister,
   onOpenWizard,
   onNavigateToDetails,
   trips: externalTrips,
@@ -167,7 +167,7 @@ export default function Dashboard({
     },
     tr: {
       appName: 'AI Seyahat Asistanı',
-      greetingPrefix: 'Merhaba Mehmet!',
+      greetingPrefix: 'Merhaba mehmet!',
       greetingQuestion: 'Sıradaki durağımız neresi?',
       greetingSubtitle: 'Otonom seyahat asistanınız hava durumunu, bölgesel önerileri ve kişisel rotalarınızı senkronize etti.',
       planNewTripBtn: 'Yeni Seyahat Planla',
@@ -207,7 +207,7 @@ export default function Dashboard({
   const filteredTrips = useMemo(() => {
     return trips.filter((trip) => {
       // Filter by status tag
-      const matchesFilter = 
+      const matchesFilter =
         activeFilter === 'All' ? true : trip.status.toLowerCase() === activeFilter.toLowerCase();
 
       // Filter by search query
@@ -310,19 +310,19 @@ export default function Dashboard({
               <Map className="w-3.5 h-3.5 text-emerald-600" />
               <span>{lang === 'tr' ? 'Rotalarım' : 'My Journeys'}</span>
             </span>
-            <button 
+            <button
               onClick={() => showToast(lang === 'tr' ? 'Keşif sekmesi yakında aktif!' : 'Explore Catalog coming soon!')}
               className="px-3 py-1.5 rounded-lg hover:text-emerald-700 hover:bg-slate-100 transition-colors"
             >
               {lang === 'tr' ? 'Rotaları Keşfet' : 'Discover'}
             </button>
-            <button 
+            <button
               onClick={() => showToast(lang === 'tr' ? 'Akıllı bavul listesi hazır!' : 'Packing Assistant synced!')}
               className="px-3 py-1.5 rounded-lg hover:text-emerald-700 hover:bg-slate-100 transition-colors"
             >
               {lang === 'tr' ? 'Bavul Hazırlığı' : 'Packing'}
             </button>
-            <button 
+            <button
               onClick={() => showToast(lang === 'tr' ? 'Yapay zeka asistanı devrede.' : 'AI Concierge is standby.')}
               className="px-3 py-1.5 rounded-lg hover:text-emerald-700 hover:bg-slate-100 transition-colors flex items-center gap-1"
             >
@@ -461,8 +461,8 @@ export default function Dashboard({
                       {lang === 'tr' ? 'Yapay Zeka ile Yeni Bir Seyahat Tasarla' : 'Ready to craft your next unforgettable memory?'}
                     </h2>
                     <p className="text-xs sm:text-sm text-slate-300">
-                      {lang === 'tr' 
-                        ? 'Varış noktanızı söyleyin, otonom yapay zeka saniyeler içinde rota, otel ve hava durumu planlasın.' 
+                      {lang === 'tr'
+                        ? 'Varış noktanızı söyleyin, otonom yapay zeka saniyeler içinde rota, otel ve hava durumu planlasın.'
                         : 'Autonomous agents map weather, flights, cliffside stays, and secret local favorites in seconds.'}
                     </p>
                   </div>
@@ -499,8 +499,8 @@ export default function Dashboard({
                 Ongoing: content.filterOngoing,
                 Past: content.filterPast
               };
-              const count = statusKey === 'All' 
-                ? trips.length 
+              const count = statusKey === 'All'
+                ? trips.length
                 : trips.filter(t => t.status.toLowerCase() === statusKey.toLowerCase()).length;
 
               const isSelected = activeFilter === statusKey;
@@ -510,16 +510,14 @@ export default function Dashboard({
                   key={statusKey}
                   type="button"
                   onClick={() => setActiveFilter(statusKey)}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap ${
-                    isSelected
-                      ? 'bg-white text-emerald-800 shadow-sm'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
-                  }`}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap ${isSelected
+                    ? 'bg-white text-emerald-800 shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
+                    }`}
                 >
                   <span>{labelMap[statusKey]}</span>
-                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                    isSelected ? 'bg-emerald-100 text-emerald-800 font-extrabold' : 'bg-slate-300/80 text-slate-600'
-                  }`}>
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${isSelected ? 'bg-emerald-100 text-emerald-800 font-extrabold' : 'bg-slate-300/80 text-slate-600'
+                    }`}>
                     {count}
                   </span>
                 </button>
@@ -560,11 +558,10 @@ export default function Dashboard({
                   setTrips(INITIAL_TRIPS);
                 }
               }}
-              className={`px-2.5 py-2 text-xs font-semibold rounded-xl border transition-all ${
-                trips.length === 0
-                  ? 'bg-emerald-600 border-emerald-600 text-white'
-                  : 'bg-white border-slate-200 text-slate-600 hover:border-emerald-400 hover:text-emerald-700'
-              }`}
+              className={`px-2.5 py-2 text-xs font-semibold rounded-xl border transition-all ${trips.length === 0
+                ? 'bg-emerald-600 border-emerald-600 text-white'
+                : 'bg-white border-slate-200 text-slate-600 hover:border-emerald-400 hover:text-emerald-700'
+                }`}
               title="Toggle Empty State to preview the requested empty component"
             >
               {trips.length === 0 ? content.resetTrips : content.toggleDemoEmpty}
@@ -905,11 +902,10 @@ export default function Dashboard({
                       key={style}
                       type="button"
                       onClick={() => setNewTripStyle(style)}
-                      className={`p-2 rounded-xl border font-semibold transition-all text-center ${
-                        newTripStyle === style
-                          ? 'border-emerald-500 bg-emerald-50 text-emerald-800 shadow-sm'
-                          : 'border-slate-200 hover:border-slate-300 text-slate-600 bg-white'
-                      }`}
+                      className={`p-2 rounded-xl border font-semibold transition-all text-center ${newTripStyle === style
+                        ? 'border-emerald-500 bg-emerald-50 text-emerald-800 shadow-sm'
+                        : 'border-slate-200 hover:border-slate-300 text-slate-600 bg-white'
+                        }`}
                     >
                       {style}
                     </button>

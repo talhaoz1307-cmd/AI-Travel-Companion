@@ -69,65 +69,62 @@ const INITIAL_TRIPS = [
   }
 ];
 
+// Helper to determine view from browser pathname (NO hash!)
+const parseViewFromPath = () => {
+  if (typeof window === 'undefined') return 'dashboard';
+
+  // If URL contains a hash from previous sessions, clean it out completely
+  if (window.location.hash) {
+    const cleanHash = window.location.hash.replace(/^#\/?/, '');
+    window.history.replaceState(null, '', `/${cleanHash}`);
+  }
+
+  const path = window.location.pathname.replace(/^\/|\/$/g, '').toLowerCase();
+  if (path === 'itinerary' || path === 'details') return 'details';
+  if (path === 'wizard' || path === 'planner') return 'wizard';
+  if (path === 'register') return 'register';
+  if (path === 'login') return 'login';
+  return 'dashboard';
+};
+
 function App() {
   // Shared trips list
   const [trips, setTrips] = useState(INITIAL_TRIPS);
 
-  // Default to 'details' to prioritize showcasing the new comprehensive Trip Details & AI Result page
-  const [currentView, setCurrentView] = useState(() => {
-    if (typeof window !== 'undefined') {
-      if (window.location.hash === '#dashboard') return 'dashboard';
-      if (window.location.hash === '#wizard') return 'wizard';
-      if (window.location.hash === '#login') return 'login';
-      if (window.location.hash === '#register') return 'register';
-    }
-    return 'details';
-  });
+  // Active view state without using '#'
+  const [currentView, setCurrentView] = useState(parseViewFromPath);
 
+  // Clean navigation helper using HTML5 History API (no '#' in URLs)
+  const navigateTo = (view, pathName) => {
+    setCurrentView(view);
+    if (typeof window !== 'undefined') {
+      window.history.pushState({ view }, '', `/${pathName}`);
+    }
+  };
+
+  const navigateToLogin = () => navigateTo('login', 'login');
+  const navigateToRegister = () => navigateTo('register', 'register');
+  const navigateToDashboard = () => navigateTo('dashboard', 'dashboard');
+  const navigateToWizard = () => navigateTo('wizard', 'wizard');
+  const navigateToDetails = () => navigateTo('details', 'itinerary');
+
+  // Handle browser back and forward button clicks (popstate)
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash;
-      if (hash === '#login') {
-        setCurrentView('login');
-      } else if (hash === '#register') {
-        setCurrentView('register');
-      } else if (hash === '#dashboard') {
-        setCurrentView('dashboard');
-      } else if (hash === '#wizard' || hash === '#planner') {
-        setCurrentView('wizard');
-      } else if (hash === '#details' || hash === '#itinerary') {
-        setCurrentView('details');
-      }
+    const handlePopState = () => {
+      setCurrentView(parseViewFromPath());
     };
 
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  const navigateToLogin = () => {
-    window.location.hash = 'login';
-    setCurrentView('login');
-  };
-
-  const navigateToRegister = () => {
-    window.location.hash = 'register';
-    setCurrentView('register');
-  };
-
-  const navigateToDashboard = () => {
-    window.location.hash = 'dashboard';
-    setCurrentView('dashboard');
-  };
-
-  const navigateToWizard = () => {
-    window.location.hash = 'wizard';
-    setCurrentView('wizard');
-  };
-
-  const navigateToDetails = () => {
-    window.location.hash = 'details';
-    setCurrentView('details');
-  };
+  // Ensure any lingering '#' in URL is removed on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash) {
+      const cleanPath = window.location.hash.replace(/^#\/?/, '') || 'dashboard';
+      window.history.replaceState(null, '', `/${cleanPath}`);
+    }
+  }, []);
 
   // Callback when AI Itinerary generation in the Wizard completes
   const handleWizardComplete = (newPlan) => {
@@ -181,6 +178,17 @@ function App() {
       <div className="fixed bottom-4 right-4 z-50 flex items-center p-1 rounded-full bg-slate-900/95 text-white backdrop-blur-md shadow-2xl border border-slate-700/70 text-xs max-w-[95vw] overflow-x-auto">
         <button
           type="button"
+          onClick={navigateToDashboard}
+          className={`px-3 py-1.5 rounded-full font-semibold transition-all whitespace-nowrap ${
+            currentView === 'dashboard'
+              ? 'bg-emerald-500 text-white shadow-sm'
+              : 'text-slate-300 hover:text-white'
+          }`}
+        >
+          Dashboard
+        </button>
+        <button
+          type="button"
           onClick={navigateToDetails}
           className={`px-3 py-1.5 rounded-full font-semibold transition-all whitespace-nowrap ${
             currentView === 'details'
@@ -200,17 +208,6 @@ function App() {
           }`}
         >
           AI Wizard
-        </button>
-        <button
-          type="button"
-          onClick={navigateToDashboard}
-          className={`px-3 py-1.5 rounded-full font-semibold transition-all whitespace-nowrap ${
-            currentView === 'dashboard'
-              ? 'bg-emerald-500 text-white shadow-sm'
-              : 'text-slate-300 hover:text-white'
-          }`}
-        >
-          Dashboard
         </button>
         <button
           type="button"
@@ -236,6 +233,17 @@ function App() {
         </button>
       </div>
 
+      {currentView === 'dashboard' && (
+        <Dashboard
+          onNavigateToLogin={navigateToLogin}
+          onNavigateToRegister={navigateToRegister}
+          onOpenWizard={navigateToWizard}
+          onNavigateToDetails={navigateToDetails}
+          trips={trips}
+          setTrips={setTrips}
+        />
+      )}
+
       {currentView === 'details' && (
         <TripDetailsPage
           onNavigateToDashboard={navigateToDashboard}
@@ -247,17 +255,6 @@ function App() {
           onComplete={handleWizardComplete}
           onClose={navigateToDashboard}
           onNavigateToDashboard={navigateToDashboard}
-        />
-      )}
-
-      {currentView === 'dashboard' && (
-        <Dashboard
-          onNavigateToLogin={navigateToLogin}
-          onNavigateToRegister={navigateToRegister}
-          onOpenWizard={navigateToWizard}
-          onNavigateToDetails={navigateToDetails}
-          trips={trips}
-          setTrips={setTrips}
         />
       )}
 

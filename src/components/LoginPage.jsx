@@ -648,17 +648,16 @@ export default function LoginPage({ onNavigateToRegister, onNavigateToDashboard 
                 </span>
               </label>
 
-              {/* Forgot Password Link */}
-              <a
-                href="#forgot-password"
-                onClick={(e) => {
-                  e.preventDefault();
+              {/* Forgot Password Button */}
+              <button
+                type="button"
+                onClick={() => {
                   alert(lang === 'tr' ? 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.' : 'Password reset link simulated.');
                 }}
                 className="text-xs font-semibold text-emerald-700 hover:text-emerald-800 hover:underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded px-1 py-0.5"
               >
                 {content.forgotPassword}
-              </a>
+              </button>
             </div>
 
             {/* SUBMIT BUTTON WITH MODERN EMERALD/INDIGO MICRO-INTERACTIONS */}
@@ -747,10 +746,9 @@ export default function LoginPage({ onNavigateToRegister, onNavigateToDashboard 
           {/* Sign Up Redirect */}
           <div className="mt-8 text-center text-xs text-slate-500">
             <span>{content.noAccount} </span>
-            <a
-              href="#signup"
-              onClick={(e) => {
-                e.preventDefault();
+            <button
+              type="button"
+              onClick={() => {
                 if (onNavigateToRegister) {
                   onNavigateToRegister();
                 }
@@ -758,7 +756,7 @@ export default function LoginPage({ onNavigateToRegister, onNavigateToDashboard 
               className="font-bold text-emerald-700 hover:text-emerald-800 hover:underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded px-1 cursor-pointer"
             >
               {content.signUp}
-            </a>
+            </button>
           </div>
         </div>
 

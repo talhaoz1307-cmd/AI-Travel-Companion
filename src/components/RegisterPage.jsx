@@ -57,7 +57,7 @@ const DESTINATIONS = [
   }
 ];
 
-export default function RegisterPage({ onNavigateToLogin }) {
+export default function RegisterPage({ onNavigateToLogin, onNavigateToDashboard }) {
   // Form input states
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -622,7 +622,7 @@ export default function RegisterPage({ onNavigateToLogin }) {
               <div className="space-y-3 pt-2">
                 <button
                   type="button"
-                  onClick={() => onNavigateToLogin ? onNavigateToLogin() : alert('Redirecting to dashboard...')}
+                  onClick={() => onNavigateToDashboard ? onNavigateToDashboard() : (onNavigateToLogin ? onNavigateToLogin() : null)}
                   className="w-full py-3.5 px-4 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 shadow-lg shadow-emerald-600/25 transition-all duration-200 active:scale-95 flex items-center justify-center gap-2"
                 >
                   <span>{content.goToDashboard}</span>

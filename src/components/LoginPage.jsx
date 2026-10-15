@@ -53,7 +53,7 @@ const DESTINATIONS = [
   }
 ];
 
-export default function LoginPage({ onNavigateToRegister }) {
+export default function LoginPage({ onNavigateToRegister, onNavigateToDashboard }) {
   // Form input states
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -171,6 +171,11 @@ export default function LoginPage({ onNavigateToRegister }) {
         setAuthError(content.authFailed);
       } else {
         setAuthSuccess(true);
+        if (onNavigateToDashboard) {
+          setTimeout(() => {
+            onNavigateToDashboard();
+          }, 900);
+        }
       }
     }, 1200);
   };
